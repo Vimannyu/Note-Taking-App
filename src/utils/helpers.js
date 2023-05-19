@@ -2,6 +2,9 @@ const NoteManagement = require('../services/noteServices.js');
 
 const isCategoryIDExistsInNotes = async categoryID => {
   try {
+
+
+     NoteManagement = new NoteManagement();
     const notes = await NoteManagement.getAllNotes();
 
     const notesArray = [];

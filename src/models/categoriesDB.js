@@ -13,6 +13,7 @@ const Category = mongoose.model('Category', categorySchema);
 
 
 module.exports = {
-  categorySchema,
+
   Category,
+  categorySchema
 };

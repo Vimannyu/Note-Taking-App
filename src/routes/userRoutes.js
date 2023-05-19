@@ -9,15 +9,15 @@ const {
 } = require('../controllers/userController');
 
 // Route for creating a user
-router.post('/users', createUser);
+router.post('/api/users', createUser);
 
 // Route for getting a user by ID
-router.get('/users/:id', getUserById);
+router.get('/api/users/:id', getUserById);
 
 // Route for updating a user
-router.put('/users/:id', updateUser);
+router.put('/api/users/:id', updateUser);
 
 // Route for deleting a user
-router.delete('/users/:id', deleteUser);
+router.delete('/api/users/:id', deleteUser);
 
 module.exports = router;

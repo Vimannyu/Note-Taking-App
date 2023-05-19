@@ -1,8 +1,8 @@
-const UserManagement = require('../services/userServices.js');
+const userManagement = require('../services/userServices.js');
 
 const validator = require('validator');
 
-const userManagement = new UserManagement();
+//const userManagement = new UserManagement();
 
 const createUser = async (req, res, next) => {
   try {

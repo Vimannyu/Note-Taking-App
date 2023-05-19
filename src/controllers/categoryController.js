@@ -1,4 +1,4 @@
-const CategoryManagement = require('../service/categoryServices.js');
+const CategoryManagement = require('../services/categoryServices.js');
 const validator = require('validator');
 
 const categoryManagement = new CategoryManagement();

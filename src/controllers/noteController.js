@@ -1,4 +1,4 @@
-const NoteManagement = require('../service/noteServices.js');
+const NoteManagement = require('../services/noteServices.js');
 
 const validator = require('validator');
 

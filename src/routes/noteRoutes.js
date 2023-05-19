@@ -7,7 +7,7 @@ const {
   createNote,
   updateNote,
   deleteNote,
-} = require('./controllers/noteController');
+} = require('../controllers/noteController');
 
 router.get('/api/notes', getAllNotes);
 router.get('/api/notes/:id', getNoteById);
