@@ -1,22 +1,20 @@
+const logger = require('../middleware/logger.js');
 const NoteManagement = require('../services/noteServices.js');
-
 const validator = require('validator');
-
-const utils = require('../utils/helpers.js');
+const utils = require('../utils/helper.js');
 
 const noteManagement = new NoteManagement();
 
-// GET /api/notes
 const getAllNotes = async (req, res, next) => {
   try {
     const notes = await noteManagement.getAllNotes();
     res.status(200).json(notes);
   } catch (error) {
+    logger.error('An error occurred while getting all notes:', error);
     next(error);
   }
 };
-
-// GET /api/notes/:id
+//-----------------------------------------------------------------------------
 const getNoteById = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -27,30 +25,31 @@ const getNoteById = async (req, res, next) => {
       res.status(404).json({ message: 'Note not found' });
     }
   } catch (error) {
+    logger.error('An error occurred while getting a note by ID:', error);
     next(error);
   }
 };
-
-// POST /api/notes
+//-------------------------------------------------------------------------------------------------------------
 const createNote = async (req, res, next) => {
   try {
     const { userID, categoryID, title, content } = req.body;
+
     const errors = [];
 
-    // if (!validator.isUUID(userID)) {
-    //   errors.push({ message: 'Invalid userID.' });
-    // }
+    if (!utils.isValidObjectID(userID)) {
+      errors.push({ field: 'userID', message: 'Enter valid userID' });
+    }
 
-    // if (!validator.isUUID(categoryID)) {
-    //   errors.push({ message: 'Invalid categoryID.' });
-    // }
+    if (!utils.isValidObjectID(categoryID)) {
+      errors.push({ field: 'categoryID', message: 'Enter valid categoryID' });
+    }
 
     if (validator.isEmpty(title)) {
-      errors.push({ message: 'Title is required.' });
+      errors.push({ field: 'title', message: 'Title is required.' });
     }
 
     if (validator.isEmpty(content)) {
-      errors.push({ message: 'Content is required.' });
+      errors.push({ field: 'content', message: 'Content is required.' });
     }
 
     if (errors.length > 0) {
@@ -59,8 +58,6 @@ const createNote = async (req, res, next) => {
       error.code = 422;
       throw error;
     }
-
-    //const completeCheck = await utils.checkCategoryID(categoryID);
 
     const newNote = await noteManagement.createNote(
       userID,
@@ -70,36 +67,37 @@ const createNote = async (req, res, next) => {
     );
     res.status(201).json(newNote);
   } catch (error) {
+    logger.error('An error occurred while creating a note:', error);
     if (error.code == 11000) {
-      console.log('Error: Category ID already exists!');
+      logger.error('Error: Category ID already exists!');
     } else {
-      console.log('Error:', error.message);
+      logger.error('Error:', error.message);
     }
     next(error);
   }
 };
-
-// PUT /api/notes/:id
+//-------------------------------------------------------------------------------------------------
 const updateNote = async (req, res, next) => {
   try {
     const { id } = req.params;
     const updates = req.body;
+
     const errors = [];
 
-    if (!validator.isUUID(req.body.userID)) {
-      errors.push({ message: 'Invalid userID.' });
+    if (!utils.isValidObjectID(userID)) {
+      errors.push({ field: 'userID', message: 'Enter valid userID' });
     }
 
-    if (!validator.isUUID(req.body.categoryID)) {
-      errors.push({ message: 'Invalid categoryID.' });
+    if (!utils.isValidObjectID(categoryID)) {
+      errors.push({ field: 'categoryID', message: 'Enter valid categoryID' });
     }
 
-    if (validator.isEmpty(req.body.title)) {
-      errors.push({ message: 'Title is required.' });
+    if (validator.isEmpty(title)) {
+      errors.push({ field: 'title', message: 'Title is required.' });
     }
 
-    if (validator.isEmpty(req.body.content)) {
-      errors.push({ message: 'Content is required.' });
+    if (validator.isEmpty(content)) {
+      errors.push({ field: 'content', message: 'Content is required.' });
     }
 
     if (errors.length > 0) {
@@ -108,6 +106,7 @@ const updateNote = async (req, res, next) => {
       error.code = 422;
       throw error;
     }
+
     const updatedNote = await noteManagement.updateNote(id, updates);
     if (updatedNote) {
       res.status(200).json(updatedNote);
@@ -115,11 +114,11 @@ const updateNote = async (req, res, next) => {
       res.status(404).json({ message: 'Note not found' });
     }
   } catch (error) {
+    logger.error('An error occurred while updating a note:', error);
     next(error);
   }
 };
-
-// DELETE /api/notes/:id
+//-------------------------------------------------------------------------------------------------------------
 const deleteNote = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -130,6 +129,7 @@ const deleteNote = async (req, res, next) => {
       res.status(404).json({ message: 'Note not found' });
     }
   } catch (error) {
+    logger.error('An error occurred while deleting a note:', error);
     next(error);
   }
 };

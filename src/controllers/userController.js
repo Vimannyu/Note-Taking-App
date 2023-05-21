@@ -1,8 +1,6 @@
+const logger = require('../middleware/logger.js');
 const userManagement = require('../services/userServices.js');
-
 const validator = require('validator');
-
-//const userManagement = new UserManagement();
 
 const createUser = async (req, res, next) => {
   try {
@@ -28,10 +26,11 @@ const createUser = async (req, res, next) => {
     const newUser = await userManagement.createUser(name, email, password);
     res.status(201).json(newUser);
   } catch (error) {
+    logger.error('An error occurred while creating a user:', error);
     next(error);
   }
 };
-
+//-----------------------------------------------------------------------------------------------------------------------------
 const getUserById = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -42,10 +41,11 @@ const getUserById = async (req, res, next) => {
       res.status(404).json({ message: 'User not found' });
     }
   } catch (error) {
+    logger.error('An error occurred while fetching user by ID:', error);
     next(error);
   }
 };
-
+//--------------------------------------------------------------------------------------------------------------------------------
 const updateUser = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -81,16 +81,18 @@ const updateUser = async (req, res, next) => {
       res.status(404).json({ message: 'User not found' });
     }
   } catch (error) {
+    logger.error('An error occurred while updating a user:', error);
     next(error);
   }
 };
-
+//-----------------------------------------------------------------------------------------------------------------------
 const deleteUser = async (req, res, next) => {
   try {
     const { id } = req.params;
     await userManagement.deleteUser(id);
     res.sendStatus(204);
   } catch (error) {
+    logger.error('An error occurred while deleting a user:', error);
     next(error);
   }
 };
