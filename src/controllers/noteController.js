@@ -37,13 +37,13 @@ const createNote = async (req, res, next) => {
     const { userID, categoryID, title, content } = req.body;
     const errors = [];
 
-    if (!validator.isUUID(userID)) {
-      errors.push({ message: 'Invalid userID.' });
-    }
+    // if (!validator.isUUID(userID)) {
+    //   errors.push({ message: 'Invalid userID.' });
+    // }
 
-    if (!validator.isUUID(categoryID)) {
-      errors.push({ message: 'Invalid categoryID.' });
-    }
+    // if (!validator.isUUID(categoryID)) {
+    //   errors.push({ message: 'Invalid categoryID.' });
+    // }
 
     if (validator.isEmpty(title)) {
       errors.push({ message: 'Title is required.' });
@@ -60,19 +60,7 @@ const createNote = async (req, res, next) => {
       throw error;
     }
 
-    const completeCheck = await utils.checkCategoryID(categoryID);
-
-    if (completeCheck) {
-      console.error('categoryID already exists use some different category which is not used yet');
-    } else {
-      const newNote = await noteManagement.createNote(
-        userID,
-        categoryID,
-        title,
-        content
-      );
-      res.status(201).json(newNote);
-    }
+    //const completeCheck = await utils.checkCategoryID(categoryID);
 
     const newNote = await noteManagement.createNote(
       userID,
@@ -82,6 +70,11 @@ const createNote = async (req, res, next) => {
     );
     res.status(201).json(newNote);
   } catch (error) {
+    if (error.code == 11000) {
+      console.log('Error: Category ID already exists!');
+    } else {
+      console.log('Error:', error.message);
+    }
     next(error);
   }
 };

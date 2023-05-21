@@ -1,10 +1,10 @@
 
 
-const Note = require('../models/notesDB.js');
+const {Note} = require('../models/notesDB.js');
 
 class NoteManagement {
     // Retrieve a list of all notes
-    static async getAllNotes() {
+     async getAllNotes() {
       try {
         const notes = await Note.find();
         return notes;
@@ -14,7 +14,7 @@ class NoteManagement {
     }
   
     // Retrieve a specific note by its ID
-    static async getNoteById(id) {
+     async getNoteById(id) {
       try {
         const note = await Note.findById(id);
         return note;
@@ -24,7 +24,7 @@ class NoteManagement {
     }
   
     // Create a new note
-    static async createNote(userID, categoryID, title, content) {
+     async createNote(userID, categoryID, title, content) {
         try {
           const currentTime = new Date();
           const note = await Note.create({ userID, categoryID, title, content, createdAt: currentTime, updatedAt: currentTime });
@@ -36,7 +36,7 @@ class NoteManagement {
     
   
     // Update an existing note
-    static async updateNote(id, updates) {
+   async updateNote(id, updates) {
         try {
           updates.updatedAt = new Date();
           const note = await Note.findByIdAndUpdate(id, updates, { new: true });
@@ -48,7 +48,7 @@ class NoteManagement {
     
   
     // Delete a note
-    static async deleteNote(id) {
+     async deleteNote(id) {
       try {
         const note = await Note.findByIdAndDelete(id);
         return note;

@@ -35,7 +35,7 @@ const createCategory = async (req, res, next) => {
 
     const errors = [];
 
-    if (validator.isEmpty(name) || !validator.isLength(password, { min: 10 })) {
+    if (validator.isEmpty(name) || !validator.isLength(name, { min: 3 })) {
       errors.push({ message: 'Category name should not be empty!' });
     }
 

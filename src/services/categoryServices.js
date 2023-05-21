@@ -1,6 +1,6 @@
 
 
-const Category = require('../models/categoriesDB.js');
+const {Category} = require('../models/categoriesDB.js');
 
 class CategoryManagement {
    
@@ -15,8 +15,8 @@ class CategoryManagement {
       return category;
     }
   
-    async createCategory( name) {
-      const newCategory = new Category({  name });
+    async createCategory(name) {
+      const newCategory = new Category({ name });
       await newCategory.save();
       return newCategory;
     }
