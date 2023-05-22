@@ -4,7 +4,8 @@
   "description": "This is note taking app.",
   "main": "src/server.js",
   "scripts": {
-    "test": "mocha src/test/*.test.js"
+    "test": "mocha src/test/*.test.js",
+    "start": "nodemon src/server.js"
   },
   "repository": {
     "type": "git",
