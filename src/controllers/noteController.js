@@ -1,7 +1,7 @@
 const logger = require('../middleware/logger.js');
 const NoteManagement = require('../services/noteServices.js');
 const validator = require('validator');
-const utils = require('../utils/helper.js');
+//const utils = require('../utils/helper.js');
 
 const noteManagement = new NoteManagement();
 
@@ -36,13 +36,13 @@ const createNote = async (req, res, next) => {
 
     const errors = [];
 
-    if (!utils.isValidObjectID(userID)) {
-      errors.push({ field: 'userID', message: 'Enter valid userID' });
-    }
+    // if (!utils.isValidObjectID(userID)) {
+    //   errors.push({ field: 'userID', message: 'Enter valid userID' });
+    // }
 
-    if (!utils.isValidObjectID(categoryID)) {
-      errors.push({ field: 'categoryID', message: 'Enter valid categoryID' });
-    }
+    // if (!utils.isValidObjectID(categoryID)) {
+    //   errors.push({ field: 'categoryID', message: 'Enter valid categoryID' });
+    // }
 
     if (validator.isEmpty(title)) {
       errors.push({ field: 'title', message: 'Title is required.' });
@@ -84,19 +84,19 @@ const updateNote = async (req, res, next) => {
 
     const errors = [];
 
-    if (!utils.isValidObjectID(userID)) {
-      errors.push({ field: 'userID', message: 'Enter valid userID' });
-    }
+    // if (!utils.isValidObjectID(userID)) {
+    //   errors.push({ field: 'userID', message: 'Enter valid userID' });
+    // }
 
-    if (!utils.isValidObjectID(categoryID)) {
-      errors.push({ field: 'categoryID', message: 'Enter valid categoryID' });
-    }
+    // if (!utils.isValidObjectID(categoryID)) {
+    //   errors.push({ field: 'categoryID', message: 'Enter valid categoryID' });
+    // }
 
-    if (validator.isEmpty(title)) {
+    if (validator.isEmpty(updates.title)) {
       errors.push({ field: 'title', message: 'Title is required.' });
     }
 
-    if (validator.isEmpty(content)) {
+    if (validator.isEmpty(updates.content)) {
       errors.push({ field: 'content', message: 'Content is required.' });
     }
 

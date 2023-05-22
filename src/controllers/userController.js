@@ -1,14 +1,29 @@
 const logger = require('../middleware/logger.js');
-const userManagement = require('../services/userServices.js');
+const UserManagement = require('../services/userServices.js');
 const validator = require('validator');
+const utils = require('../utils/helper');
+const bcrypt = require('bcryptjs');
+
+
+const userManagement = new UserManagement();
+
 
 const createUser = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
 
+    const existingUser = await utils.getUserByEmail(email);
+
+     if (existingUser) {
+       logger.info('User already exists');
+       res.status(422).message('User already present in DB');
+  
+    }
+
     const errors = [];
     if (!validator.isEmail(email)) {
       errors.push({ message: 'E-Mail is invalid.' });
+      res.status(422);
     }
     if (
       validator.isEmpty(password) ||
@@ -23,7 +38,8 @@ const createUser = async (req, res, next) => {
       error.code = 422;
       throw error;
     }
-    const newUser = await userManagement.createUser(name, email, password);
+    const hashedPw = await bcrypt.hash(password, 12);
+    const newUser = await userManagement.createUser(name, email, hashedPw);
     res.status(201).json(newUser);
   } catch (error) {
     logger.error('An error occurred while creating a user:', error);
@@ -68,7 +84,7 @@ const updateUser = async (req, res, next) => {
       error.code = 422;
       throw error;
     }
-
+    
     const updatedUser = await userManagement.updateUser(
       id,
       name,
@@ -85,7 +101,7 @@ const updateUser = async (req, res, next) => {
     next(error);
   }
 };
-//-----------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------
 const deleteUser = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -93,6 +109,7 @@ const deleteUser = async (req, res, next) => {
     res.sendStatus(204);
   } catch (error) {
     logger.error('An error occurred while deleting a user:', error);
+    res.sendStatus(404);
     next(error);
   }
 };
