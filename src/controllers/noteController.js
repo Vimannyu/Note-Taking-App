@@ -1,9 +1,13 @@
 const logger = require('../middleware/logger.js');
 const NoteManagement = require('../services/noteServices.js');
 const validator = require('validator');
+const UserManagement = require('../services/userServices.js');
+const CategoryManagement = require('../services/categoryServices.js');
 //const utils = require('../utils/helper.js');
 
 const noteManagement = new NoteManagement();
+const categoryManagement = new CategoryManagement();
+const userManagement = new UserManagement();
 
 const getAllNotes = async (req, res, next) => {
   try {
@@ -44,6 +48,17 @@ const createNote = async (req, res, next) => {
     //   errors.push({ field: 'categoryID', message: 'Enter valid categoryID' });
     // }
 
+    // Check if userId and categoryId exist
+    const user = await userManagement.getUserById(userId);
+    const category = await categoryManagement.getCategoryById(categoryId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (!category) {
+      return res.status(404).json({ message: 'Category not found' });
+    }
     if (validator.isEmpty(title)) {
       errors.push({ field: 'title', message: 'Title is required.' });
     }
