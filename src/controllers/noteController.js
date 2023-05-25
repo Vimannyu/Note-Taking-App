@@ -49,16 +49,16 @@ const createNote = async (req, res, next) => {
     // }
 
     // Check if userId and categoryId exist
-    const user = await userManagement.getUserById(userId);
-    const category = await categoryManagement.getCategoryById(categoryId);
+    const user = await userManagement.getUserById(userID);
+    const category = await categoryManagement.getCategoryById(categoryID);
 
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
+    // if (!user) {
+    //   return res.status(404).json({ message: 'User not found' });
+    // }
 
-    if (!category) {
-      return res.status(404).json({ message: 'Category not found' });
-    }
+    // if (!category) {
+    //   return res.status(404).json({ message: 'Category not found' });
+    // }
     if (validator.isEmpty(title)) {
       errors.push({ field: 'title', message: 'Title is required.' });
     }

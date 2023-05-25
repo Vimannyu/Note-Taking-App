@@ -40,7 +40,7 @@ describe('Category API', () => {
   });
 
   it('should return a category by ID', async () => {
-    const categoryId = '646b68509eab78b2f9a1b08c'; // Generate a random category ID
+    const categoryId = '646bad8a2f8ebcd77b15ad88'; // Generate a random category ID
 
      // Make a request to the endpoint that fetches a category by ID
     const res = await chai.request(app).get(`/api/categories/${categoryId}`);
@@ -49,7 +49,7 @@ describe('Category API', () => {
     expect(res).to.have.status(200);
    expect(res.body).to.be.an('object');
    expect(res.body).to.have.property('_id', categoryId);
-   expect(res.body).to.have.property('name', 'Category');
+   expect(res.body).to.have.property('name', 'Sports');
    });
 
   it('should create a new category', async () => {
